@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.div{
+			width:700px;
+			height:700px;
+			margin-left:350px;
+			background-image: url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1607435708185&di=29f5a0a234c04c6e2fa07bb983887d11&imgtype=0&src=http%3A%2F%2Fpic36.photophoto.cn%2F20150719%2F0008118848423941_b.jpg);
+			position:relative;
+		}
+		.div1{
+			display:inline-block;
+			overflow:hidden;
+			width:150px;
+			font-size:30px;
+			position:relative;
+			top:100px;
+			left:210px;
+		}
+		.div2{
+			display:inline-block;
+			overflow:hidden;
+			width:150px;
+			position:relative;
+			top:100px;
+			left:250px;
+		}
+		#div3{
+			overflow:hidden;
+			width:0;
+			height:40px;
+			font-size:20px;
+			position:absolute;
+			top:40px;
+			left:80px;
+		}
+		#div4{
+			overflow:hidden;
+			width:0;
+			height:40px;
+			font-size:20px;
+			position:absolute;
+			top:40px;
+			left:500px;
+		}
+		#div5{
+			overflow:hidden;
+			width:0;
+			height:50px;
+			font-size:40px;
+			position:absolute;
+			top:200px;
+			left:100px;
+		}
+		.input{
+			display:none;
+			height:50px;
+			width:250px;
+			font-size:45px;
+			position:absolute;
+			top:200px;
+			left:280px;
+		}
+		#div6{
+			overflow:hidden;
+			width:0;
+			position:absolute;
+			top:290px;
+			left:410px;
+		}
+		#div7{
+			overflow:hidden;
+			width:420px;
+			height:0px;
+			font-size:30px;
+			position:absolute;
+			left:150px;
+			top:190px;
+		}
+		span{
+			float:right;
+		}
+		.tishi{
+			position: absolute;
+			left:-150px;
+			top:100px;
+			width: 100px;
+			height:250px;
+			font-size: 20px;
+
+		}
+	</style>
+</head>
+<body>
+	<div class="div">
+		<div class="div1" id="div1"><button style="width: 130px;height: 50px;">开始答题</button></div>
+		<div class="div2" id="div2"><button style="width: 130px;height: 50px;">答题记录</button></div>
+		<div id="div3"></div><!-- 倒计时 -->
+		<div id="div4"></div><!-- 分数 -->
+		<div id="div5"></div><!-- 计算式子 -->
+		<div id="div6"><button style="width: 120px;height: 50px;font-size: 20px;">提交答案</button></div>
+		<input class="input" id="input" type="text" name="" value="" autofocus="autofocus">
+		<div id="div7"></div>
+		<div class="tishi">此页面程序猿正在开发，先做几道简单的数学题吧！</div>
+	</div>
+	
+</body>
+<script type="text/javascript">	
+	var div1=document.getElementById('div1');
+	var div2=document.getElementById('div2');
+	var div3=document.getElementById('div3');
+	var div4=document.getElementById('div4');
+	var input=document.getElementById('input');
+	var div6=document.getElementById('div6');
+	var div7=document.getElementById('div7');
+	var num1,num2;
+	var k;//数组计数器
+	var arr=new Array();//数组
+	var judge=new Array();
+	function add(arg1,arg2){
+		var c=arg1+arg2;
+		return c;
+	}
+	//开始答题函数
+	div1.onclick=function(){
+		//清除记录
+		div7.innerHTML=null;
+		//设置隐藏于出现
+		div1.style.width=0;
+		div2.style.width=0;
+		div3.style.width='150px';
+		div4.style.width='100px';
+		div5.style.width='200px';
+		input.style.display='inline';
+		div6.style.width='120px'
+		div7.style.height=0;
+		input.focus();
+		var i=29,time,j=0,k=0;
+		div3.innerHTML='倒计时：'+'30'+'s';
+		//倒计时
+		time=setInterval(function(){
+			if(i>0){
+				div3.innerHTML='倒计时：'+i--+'s';			
+			}else{
+				div1.style.width='150px';
+				div1.style.height='60px';
+				div2.style.width='150px';
+				div2.style.height='60px';
+				div3.style.width=0;
+				div4.style.width=0;
+				div5.style.width=0;
+				input.style.display='none';
+				div6.style.width=0;
+				div7.style.height=0;
+				clearInterval(time);
+				i=29;
+			}
+		},1000)
+		//分数
+		div4.innerHTML='得分：'+j;
+		num1=parseInt(Math.random()*101);
+		num2=parseInt(Math.random()*101);
+		div5.innerHTML=num1+'+'+num2+'='; 
+		//下一题函数
+		div6.onclick=function(){
+					if(input.value==add(num1,num2)){//判断是否答对了
+						j=j+10;
+						div4.innerHTML='得分：'+j;
+						judge[k]='对';
+					}else{
+						judge[k]='错';			
+					}
+					arr[k]=num1+'+'+num2+'='+input.value;//放入数组
+					k=k+1;
+					num1=parseInt(Math.random()*101);
+					num2=parseInt(Math.random()*101);
+					div5.innerHTML=num1+'+'+num2+'='; 
+					input.value='';//value清空
+					input.focus();//获取光标
+			}
+	}
+//答题记录函数
+	div2.onclick=function(){
+		if(arr[0]==null){
+			div7.style.height=0;
+		}else{
+			div7.style.height='450px';
+			div7.style.overflow='auto';
+			for(k=0;k<arr.length;k++){
+				div7.innerHTML=div7.innerHTML+'<br/>'+arr[k]+'<span>结果：<span/>'+judge[k];
+			}
+		}
+		//删除元素
+		arr.splice(0,arr.length);
+		judge.splice(0,judge.length);
+	}
+
+</script>
+</html>
